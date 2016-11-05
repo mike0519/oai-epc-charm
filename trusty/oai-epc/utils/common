@@ -184,7 +184,8 @@ sed -r -i "/OUTPUT/ s/\".*\"/\"CONSOLE\"/" $epc_conf_path/spgw.conf
 install_required_kernel(){
 #version=3.19
 #wget -r -e robots=off --accept-regex "(.*generic.*amd64)|(all).deb" http://kernel.ubuntu.com/~kernel-ppa/mainline/v${version}-vivid/
-wget  10.103.14.43/mykernel/linux-image-4.7.7-oaiepc_4.7.7-oaiepc-10.00.Custom_amd64.deb
+#wget  10.103.14.43/mykernel/linux-image-4.7.7-oaiepc_4.7.7-oaiepc-10.00.Custom_amd64.deb
+wget http://han.kuwan.space/kernel/linux-image-4.7.7-oaiepc_4.7.7-oaiepc-10.00.Custom_amd64.deb
 #dpkg -i kernel.ubuntu.com/*/*/*/*deb
 dpkg -i linux-image-4.7.7-oaiepc_4.7.7-oaiepc-10.00.Custom_amd64.deb
 }
