@@ -1,0 +1,6 @@
+    mme_ip_address      = (  
+                              { ipv4       = "192.168.122.31";
+                                ipv6       = "192:168:30::17";
+                                active     = "yes";
+                                preference = "ipv4"; }
+                          );
