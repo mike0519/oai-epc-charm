@@ -1,0 +1,4 @@
+restart:
+  description: Restart OAI MME process.
+stop:
+  description: Stop  OAI MME process.

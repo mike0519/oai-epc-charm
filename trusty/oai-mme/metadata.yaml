@@ -1,0 +1,24 @@
+name: oai-mme
+summary: Evolved Packet Core Network (EPC) based on OpenairInterface
+maintainers:
+  - Navid Nikaein <navid.nikaein@eurecom.fr>
+  - Andrea Bordone Molini <bordone@eurecom.fr>
+  - Bangchao Yu <yubangchao@bupt.edu.cn>
+description: |
+   This charms allows you to design, deploy, provision, and dispose your 4G-5G OpenAirInterface EPC out of the box on any cloud infrastructure.
+tags:
+  - Telecom, Network
+  - 4G, 5G
+  - Evolved Packet Core, EPC
+  - Core Network
+  - OpenAirInterface, OAI, oai
+  - Eurecom
+subordinate: false
+provides:
+  mme:
+    interface: S11
+  epc:
+    interface: S1-C
+requires:
+  hss:
+    interface: S6a-hss
