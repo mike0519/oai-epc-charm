@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eux
+#service mme_gw stop || true
+service spgw stop || true
+status-set blocked "EPC-SPGW software not running"

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -eux
+#service mme_gw stop || true
+service spgw stop || true
+$CHARM_DIR/hooks/start
+#status-set active "EPC software is running"

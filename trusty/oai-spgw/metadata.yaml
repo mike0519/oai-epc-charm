@@ -1,0 +1,19 @@
+name: oai-spgw
+summary: Evolved Packet Core Network (EPC) based on OpenairInterface
+maintainers:
+  - Navid Nikaein <navid.nikaein@eurecom.fr>
+  - Andrea Bordone Molini <bordone@eurecom.fr>
+  - Bangchao Yu
+description: |
+   This charms allows you to design, deploy, provision, and dispose your 4G-5G OpenAirInterface EPC out of the box on any cloud infrastructure.
+tags:
+  - Telecom, Network
+  - 4G, 5G
+  - Evolved Packet Core, EPC
+  - Core Network
+  - OpenAirInterface, OAI, oai
+  - Eurecom
+subordinate: false
+requires:
+  mme:
+    interface: S11

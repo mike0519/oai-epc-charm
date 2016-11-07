@@ -1,0 +1,4 @@
+restart:
+  description: Restart OAI SPGW process.
+stop:
+  description: Stop  OAI SPGW process.

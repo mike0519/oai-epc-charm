@@ -1,0 +1,92 @@
+#!/bin/bash
+################################################################################
+#
+# Copyright (c) 2016, EURECOM (www.eurecom.fr)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
+#
+################################################################################
+# file epc-relation-changed
+# brief called when the enb-epc relation is changed
+# author  navid.nikaein@eurecom.fr and A. B. Molini
+# modity by subond, at Nov 4 2016
+set -ex
+source $CHARM_DIR/utils/common
+set_env_paths
+
+mme_running=`relation-get mme_running`
+trigger_restart=`relation-get trigger_restart`
+
+#if [ "$trigger_restart" != "$(cat $CHARM_DIR/.trigger)" ]; then
+#  echo "$trigger_restart" > $CHARM_DIR/.trigger
+  # restart the SPGW for sure because is means that the MME has been run or rerun for the
+  # changed of mme.conf, so SPGW need to rerun
+#  $CHARM_DIR/hooks/start
+#  check_spgw_process
+#  if [ $status -eq 0 ]; then
+#    juju-log "OAI SPGW is running."
+#    check_spgw_connection
+#    juju-log "OAI SPGW is running and connected to OAI MME"
+#  else
+#    juju-log "OAI MME is not running...and add db relation to start MME"
+#    status-set blocked "Waiting OAI MME to run"
+#  fi
+#else
+#  check_spgw_process
+#  if [ $status -eq 0 ]; then
+#    juju-log "OAI SPGW is running."
+#    check_spgw_connection
+#  else
+#    service spgw stop
+#    juju-log "OAI MME is not running...and add db relation to start MME"
+#    status-set blocked "Waiting OAI MME to run"
+#  fi
+#fi
+
+if [ "$mme_running" == "yes" ]; then
+  $CHARM_DIR/hooks/start
+  check_spgw_process
+  if [ $status -eq 0 ]; then
+    juju-log "OAI SPGW is running."
+  else
+    juju-log "OAI SPGW is not running ...restart now"
+    service spgw restart
+  fi
+  check_spgw_connection
+  juju-log "OAI SPGW is running and connected to OAI MME"
+  status-set active "OAI SPGW is running and connected to OAI MME"
+  relation-set spgw_running=yes
+else
+  check_spgw_process
+  if [ $status -eq 0 ]; then
+    service spgw stop
+    juju-log "The mme relation is broken or hss relation is broken or both"
+    status-set blocked "Both the hss relation and database relation is needed"
+  else
+    juju-log "Can't start the OAI SPGW until the mme is running"
+    status-set blocked "Both the hss relation and database relation is needed"
+  fi
+fi
